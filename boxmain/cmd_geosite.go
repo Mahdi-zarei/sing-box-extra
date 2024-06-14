@@ -6,15 +6,14 @@ import (
 )
 
 var (
-	commandGeoSiteFlagFile string
-	geositeReader          *geosite.Reader
-	geositeCodeList        []string
+	geositeReader   *geosite.Reader
+	geositeCodeList []string
 )
 
 func geositePreRun() error {
-	reader, codeList, err := geosite.Open(commandGeoSiteFlagFile)
+	reader, codeList, err := geosite.Open("../geosite.db") // currentDir is the config folder
 	if err != nil {
-		return E.Cause(err, "open geosite file")
+		return E.Cause(err, "open geosite file ")
 	}
 	geositeReader = reader
 	geositeCodeList = codeList

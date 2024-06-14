@@ -7,12 +7,11 @@ import (
 )
 
 var (
-	geoipReader          *maxminddb.Reader
-	commandGeoIPFlagFile string
+	geoipReader *maxminddb.Reader
 )
 
 func geoipPreRun() error {
-	reader, err := maxminddb.Open(commandGeoIPFlagFile)
+	reader, err := maxminddb.Open("../geoip.db") // currentDir is the config folder
 	if err != nil {
 		return err
 	}
