@@ -33,22 +33,21 @@ func createUnderlyingTransport(options D.TransportOptions) (D.Transport, error) 
 	}
 	// Windows Underlying DNS hook
 	t, _ := D.NewUDPTransport(options)
-	handler_ := reflect.Indirect(reflect.ValueOf(t)).FieldByName("handler")
+	handler_ := reflect.Indirect(reflect.ValueOf(t)).FieldByName("dialer")
 	handler_ = reflect.NewAt(handler_.Type(), unsafe.Pointer(handler_.UnsafeAddr())).Elem()
-	handler_.Set(reflect.ValueOf(&myTransportHandler{t, options.Dialer}))
+	handler_.Set(reflect.ValueOf(&myDialer{Dialer: options.Dialer}))
 	return t, nil
 }
 
-var _ D.Transport = (*myTransportHandler)(nil)
+var _ N.Dialer = (*myDialer)(nil)
 
-type myTransportHandler struct {
-	*D.UDPTransport
-	dialer N.Dialer
+type myDialer struct {
+	N.Dialer
 }
 
-func (t *myTransportHandler) DialContext(ctx context.Context) (net.Conn, error) {
+func (t *myDialer) DialContext(ctx context.Context, network string, destination M.Socksaddr) (net.Conn, error) {
 	if underlyingDNS == "" {
 		return nil, errors.New("no underlyingDNS")
 	}
-	return t.dialer.DialContext(ctx, "udp", M.ParseSocksaddrHostPort(underlyingDNS, 53))
+	return t.Dialer.DialContext(ctx, "udp", M.ParseSocksaddrHostPort(underlyingDNS, 53))
 }
