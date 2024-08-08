@@ -25,7 +25,7 @@ func createPreStartedClient() (*boxbox.Box, error) {
 	if err != nil {
 		return nil, err
 	}
-	instance, err := boxbox.New(boxbox.Options{Options: options}, true)
+	instance, err := boxbox.New(boxbox.Options{Options: options})
 	if err != nil {
 		return nil, E.Cause(err, "create service")
 	}

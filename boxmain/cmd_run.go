@@ -115,7 +115,7 @@ func readConfigAndMerge() (option.Options, error) {
 
 	var mergedMessage json.RawMessage
 	for _, options := range optionsList {
-		mergedMessage, err = badjson.MergeJSON(options.options.RawMessage, mergedMessage)
+		mergedMessage, err = badjson.MergeJSON(options.options.RawMessage, mergedMessage, false)
 		if err != nil {
 			return option.Options{}, E.Cause(err, "merge config at ", options.path)
 		}
@@ -130,7 +130,7 @@ func readConfigAndMerge() (option.Options, error) {
 	return mergedOptions, nil
 }
 
-func Create(nekoConfigContent []byte, disableWinPowListener bool) (*boxbox.Box, context.CancelFunc, error) {
+func Create(nekoConfigContent []byte) (*boxbox.Box, context.CancelFunc, error) {
 	var options option.Options
 	var err error
 	//
@@ -153,7 +153,7 @@ func Create(nekoConfigContent []byte, disableWinPowListener bool) (*boxbox.Box, 
 	instance, err := boxbox.New(boxbox.Options{
 		Context: ctx,
 		Options: options,
-	}, disableWinPowListener)
+	})
 	if err != nil {
 		cancel()
 		return nil, nil, E.Cause(err, "create service")
@@ -185,7 +185,7 @@ func run() error {
 	signal.Notify(osSignals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP)
 	defer signal.Stop(osSignals)
 	for {
-		instance, cancel, err := Create(nil, false)
+		instance, cancel, err := Create(nil)
 		if err != nil {
 			return err
 		}
@@ -231,7 +231,7 @@ func MergeOptions(source option.Options, destination option.Options) (option.Opt
 	if err != nil {
 		return option.Options{}, E.Cause(err, "marshal destination")
 	}
-	rawMerged, err := badjson.MergeJSON(rawSource, rawDestination)
+	rawMerged, err := badjson.MergeJSON(rawSource, rawDestination, false)
 	if err != nil {
 		return option.Options{}, E.Cause(err, "merge options")
 	}

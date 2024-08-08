@@ -48,7 +48,7 @@ type Options struct {
 	PlatformLogWriter log.PlatformWriter
 }
 
-func New(options Options, disableWinPowListener bool) (*Box, error) {
+func New(options Options) (*Box, error) {
 	createdAt := time.Now()
 	ctx := options.Context
 	if ctx == nil {
@@ -93,7 +93,6 @@ func New(options Options, disableWinPowListener bool) (*Box, error) {
 		common.PtrValueOrDefault(options.NTP),
 		options.Inbounds,
 		options.PlatformInterface,
-		disableWinPowListener,
 	)
 	if err != nil {
 		return nil, E.Cause(err, "parse route options")
@@ -112,6 +111,7 @@ func New(options Options, disableWinPowListener bool) (*Box, error) {
 			ctx,
 			router,
 			logFactory.NewLogger(F.ToString("inbound/", inboundOptions.Type, "[", tag, "]")),
+			tag,
 			inboundOptions,
 			options.PlatformInterface,
 		)
@@ -204,7 +204,7 @@ func (s *Box) PreStart() error {
 		defer func() {
 			v := recover()
 			if v != nil {
-				log.Error(E.Cause(err, "origin error"))
+				println(err.Error())
 				debug.PrintStack()
 				panic("panic on early close: " + fmt.Sprint(v))
 			}
@@ -223,9 +223,9 @@ func (s *Box) Start() error {
 		defer func() {
 			v := recover()
 			if v != nil {
-				log.Error(E.Cause(err, "origin error"))
+				println(err.Error())
 				debug.PrintStack()
-				panic("panic on early close: " + fmt.Sprint(v))
+				println("panic on early start: " + fmt.Sprint(v))
 			}
 		}()
 		s.Close()
@@ -303,7 +303,11 @@ func (s *Box) start() error {
 			return E.Cause(err, "initialize inbound/", in.Type(), "[", tag, "]")
 		}
 	}
-	return s.postStart()
+	err = s.postStart()
+	if err != nil {
+		return err
+	}
+	return s.router.Cleanup()
 }
 
 func (s *Box) postStart() error {
@@ -313,16 +317,28 @@ func (s *Box) postStart() error {
 			return E.Cause(err, "start ", serviceName)
 		}
 	}
-	for _, outbound := range s.outbounds {
-		if lateOutbound, isLateOutbound := outbound.(adapter.PostStarter); isLateOutbound {
+	// TODO: reorganize ALL start order
+	for _, out := range s.outbounds {
+		if lateOutbound, isLateOutbound := out.(adapter.PostStarter); isLateOutbound {
 			err := lateOutbound.PostStart()
 			if err != nil {
-				return E.Cause(err, "post-start outbound/", outbound.Tag())
+				return E.Cause(err, "post-start outbound/", out.Tag())
 			}
 		}
 	}
-
-	return s.router.PostStart()
+	err := s.router.PostStart()
+	if err != nil {
+		return err
+	}
+	for _, in := range s.inbounds {
+		if lateInbound, isLateInbound := in.(adapter.PostStarter); isLateInbound {
+			err = lateInbound.PostStart()
+			if err != nil {
+				return E.Cause(err, "post-start inbound/", in.Tag())
+			}
+		}
+	}
+	return nil
 }
 
 func (s *Box) Close() error {

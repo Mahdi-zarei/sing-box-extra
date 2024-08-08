@@ -36,13 +36,16 @@ func CompileRuleSet(category string, ruleSetType RuleSetType, destPath string) e
 	if err != nil {
 		return err
 	}
-	ruleSet := plainRuleSet.Upgrade()
+	ruleSet, err := plainRuleSet.Upgrade()
+	if err != nil {
+		return err
+	}
 
 	outputFile, err := os.Create(destPath)
 	if err != nil {
 		return err
 	}
-	err = srs.Write(outputFile, ruleSet)
+	err = srs.Write(outputFile, ruleSet, false)
 	if err != nil {
 		outputFile.Close()
 		os.Remove(destPath)
