@@ -7,16 +7,16 @@ require (
 	github.com/gofrs/uuid/v5 v5.2.0
 	github.com/matsuridayo/libneko v0.0.0-20230913024055-5277a5bfc889
 	github.com/oschwald/maxminddb-golang v1.12.0
-	github.com/sagernet/sing v0.5.0-beta.1
-	github.com/sagernet/sing-box v1.10.0-beta.5
+	github.com/sagernet/sing v0.5.0-beta.2
+	github.com/sagernet/sing-box v1.10.0-beta.6
 	github.com/sagernet/sing-dns v0.3.0-beta.14
-	github.com/sagernet/sing-tun v0.4.0-beta.13.0.20240704051826-aecfc190f4fa
+	github.com/sagernet/sing-tun v0.4.0-beta.16
 	github.com/spf13/cobra v1.8.0
-	golang.org/x/sys v0.22.0
+	golang.org/x/sys v0.25.0
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6
 )
 
-replace github.com/sagernet/sing-box => github.com/Mahdi-zarei/sing-box v1.3.5-0.20240902015024-87ce1b5463e9
+replace github.com/sagernet/sing-box => github.com/Mahdi-zarei/sing-box v1.3.5-0.20240918061449-35f1c345ec90
 
 require (
 	berty.tech/go-libtor v1.0.385 // indirect
@@ -63,7 +63,7 @@ require (
 	github.com/sagernet/gvisor v0.0.0-20240428053021-e691de28565f // indirect
 	github.com/sagernet/netlink v0.0.0-20240612041022-b9a21c07ac6a // indirect
 	github.com/sagernet/nftables v0.3.0-beta.4 // indirect
-	github.com/sagernet/quic-go v0.46.0-beta.4 // indirect
+	github.com/sagernet/quic-go v0.47.0-beta.2 // indirect
 	github.com/sagernet/reality v0.0.0-20230406110435-ee17307e7691 // indirect
 	github.com/sagernet/sing-mux v0.2.0 // indirect
 	github.com/sagernet/sing-quic v0.3.0-beta.3 // indirect
@@ -86,8 +86,8 @@ require (
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/mod v0.19.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.23.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240227224415-6ceb2ff114de // indirect
