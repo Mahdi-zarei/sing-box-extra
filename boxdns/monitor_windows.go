@@ -35,6 +35,7 @@ func init() {
 	monitorNU, _ = tun.NewNetworkUpdateMonitor(logger)
 	monitorDI, _ = tun.NewDefaultInterfaceMonitor(monitorNU, logger, tun.DefaultInterfaceMonitorOptions{})
 	monitorDI.RegisterCallback(monitorForUnderlyingDNS)
+	monitorDI.RegisterCallback(handleInterfaceChange)
 	monitorDI.Start()
 	monitorNU.Start()
 }
