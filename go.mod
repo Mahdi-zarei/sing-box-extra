@@ -1,22 +1,24 @@
 module github.com/Mahdi-zarei/sing-box-extra
 
-go 1.19
+go 1.21
+
+toolchain go1.23.0
 
 require (
 	github.com/dustin/go-humanize v1.0.1
-	github.com/gofrs/uuid/v5 v5.2.0
+	github.com/gofrs/uuid/v5 v5.3.0
 	github.com/matsuridayo/libneko v0.0.0-20230913024055-5277a5bfc889
-	github.com/oschwald/maxminddb-golang v1.12.0
+	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/sagernet/sing v0.5.0-beta.2
-	github.com/sagernet/sing-box v1.10.0-beta.6
+	github.com/sagernet/sing-box v1.10.0-beta.11
 	github.com/sagernet/sing-dns v0.3.0-beta.14
 	github.com/sagernet/sing-tun v0.4.0-beta.16
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	golang.org/x/sys v0.25.0
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6
 )
 
-replace github.com/sagernet/sing-box => github.com/Mahdi-zarei/sing-box v1.3.5-0.20240918061449-35f1c345ec90
+replace github.com/sagernet/sing-box => github.com/Mahdi-zarei/sing-box v1.3.5-0.20241004080948-fc777da4dba3
 
 require (
 	berty.tech/go-libtor v1.0.385 // indirect
@@ -26,7 +28,6 @@ require (
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/cretz/bine v0.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/gaukas/godicttls v0.0.4 // indirect
 	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/go-chi/render v1.0.3 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
@@ -72,7 +73,7 @@ require (
 	github.com/sagernet/sing-shadowtls v0.1.4 // indirect
 	github.com/sagernet/sing-vmess v0.1.12 // indirect
 	github.com/sagernet/smux v0.0.0-20231208180855-7041f6ea79e7 // indirect
-	github.com/sagernet/utls v1.5.4 // indirect
+	github.com/sagernet/utls v1.6.7 // indirect
 	github.com/sagernet/wireguard-go v0.0.0-20231215174105-89dec3b2f3e8 // indirect
 	github.com/sagernet/ws v0.0.0-20231204124109-acfe8907c854 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
